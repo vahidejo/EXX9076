@@ -1,7 +1,6 @@
-#
-# Task 01
 # Vahidreza Jahanmard
-#
+# 
+# Task 01
 #
 # Create a function that takes as input the path to a single .csv file in the specdata folder and creates
 # a data table from its contents. The data types in the output table have to match the data
