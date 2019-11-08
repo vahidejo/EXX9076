@@ -12,7 +12,6 @@ a data table from its contents. The data types in the output table have to match
 """
 
 import pandas as pd
-from os import listdir, sep
 
 """
 path_to = 'specdata/001.csv'
@@ -29,7 +28,7 @@ written in previous point to read the data from the .csv files. Create a table w
 a) ID nr b) the nr of rows in each of the read in tables c) The number of rows where atleast sulfate or
 nitrate data is not missing.
 """
-
+from os import listdir, sep
 
 files_list = listdir('specdata')
 
