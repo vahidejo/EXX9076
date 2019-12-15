@@ -1,0 +1,16 @@
+---
+title: "My Course Project"
+output: html
+---
+
+In this investigation, we want to examine the model Sea level data (hydrodynamic models – HDM) compared with tide gauge data that is referenced to the geoid. and find biases between time series of medel and this tide gauges to improve the 
+
+We have Dynamic Topography (DT) data of the Baltic sea in two ways:
+
+1. Time history data of marine hydrodynamic model (NEMO-NORDIC)
+2. Time history of DT observation in 16 station around the Estonia (Tide Gauge data)
+
+We want to compare two time-history and validate the model data by the observations.
+
+# Read Data
+So, we read the files of data at the first. the Data is available for a year (2015)
