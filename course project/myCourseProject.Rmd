@@ -20,7 +20,20 @@ path_to <- "MyData/001.csv"
 
 ReadData <- function(path_to){
   Table <- read.table(file = path_to , header = T, sep = ',', skip = 3)
+  # In some data sheets, the names of col are different! so:
   names(Table) <- c('date', 'time','TG','Model_m','Model_cm')
+  
+  # Remove NaNs
+  Table = Table[ , !apply( Table , 2 , function(x) all(is.na(x)) ) ]
+  Table = na.omit(Table)
+  
+  Temp <- read.table(file = path_to , header = F, sep = ',', skip = 2 , nrows = 1)
+  Table$Lon <- Temp$V2
+  Table$Lat <- Temp$V3
+  
+  # creat a column as a Date with date format
+  Table$Date <- as.POSIXct(paste(Table$date,Table$time),format = '%m/%d/%Y %H:%M:%OS',tz = 'UTC')
+
   return(Table)
 }
 
@@ -28,5 +41,12 @@ ReadData <- function(path_to){
 Data <- ReadData(path_to)
 
 head(Data)
+```
+
+Plot a station of tide gauge and show the difference between model and currect tide guage
+
+```{r}
+plot(Data$Date  , Data$TG , type = "l" , col = "blue")
+lines(Data$Date  , Data$Model_cm , col = "red")
 ```
 
