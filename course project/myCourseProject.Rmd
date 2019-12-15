@@ -48,5 +48,60 @@ Plot a station of tide gauge and show the difference between model and currect t
 ```{r}
 plot(Data$Date  , Data$TG , type = "l" , col = "blue")
 lines(Data$Date  , Data$Model_cm , col = "red")
+legend("top", c("Tide Gauge","Model"),fill = c("blue","red"))
 ```
+As can be seen, the model has a bias problem and we need to use bias-correction to modify the model.
+So, we want to calculate the mean of model and TG in the 16 stations at first. after that we estimate the difference between model and TG in each station.
+
+# Mean of Model and TG in a year and differences of them
+Read all data with the for loop and creat a table of mean and difference:
+
+```{r}
+file_names <- list.files('MyData', full.names = T)
+A = c()
+k <- 1
+for (i in file_names) {
+  
+  data_i <- ReadData(i)
+  A$file_names <- summary(data_i)
+  
+  ID <- k
+  Mean_TG <- mean(data_i$TG)
+  Mean_Model <- mean(data_i$Model_cm)
+  Diff <- Mean_TG - Mean_Model
+  Lon <- data_i$Lon[1]
+  Lat <- data_i$Lat[1]
+  
+  MeanTable_i <- data.frame(ID,Mean_TG,Mean_Model,Diff,Lon,Lat)
+  
+  if (k == 1) {
+    MeanTable <- MeanTable_i
+    k <- 2
+  } else {
+    MeanTable <- rbind(MeanTable,MeanTable_i)
+    k <- k + 1
+  }
+}
+
+MeanTable = na.omit(MeanTable)
+
+head(MeanTable)
+```
+Plot the Differences vs Latitude and Longitude
+```{r}
+library(ggplot2)
+
+byLoc <- ggplot(MeanTable, aes(x = Lon, y = Lat, color = Diff)) + 
+    geom_point(size = 6)
+
+diffP <- ggplot(MeanTable, aes(x = ID, y = Diff)) + 
+    geom_point()
+
+library(gridExtra)
+grid.arrange(byLoc,diffP,nrow = 2, heights = c(5,2))
+```
+
+
+
+
 
