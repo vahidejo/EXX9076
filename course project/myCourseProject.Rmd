@@ -14,3 +14,19 @@ We want to compare two time-history and validate the model data by the observati
 
 # Read Data
 So, we read the files of data at the first. the Data is available for a year (2015)
+
+```{r}
+path_to <- "MyData/001.csv"
+
+ReadData <- function(path_to){
+  Table <- read.table(file = path_to , header = T, sep = ',', skip = 3)
+  names(Table) <- c('date', 'time','TG','Model_m','Model_cm')
+  return(Table)
+}
+
+
+Data <- ReadData(path_to)
+
+head(Data)
+```
+
