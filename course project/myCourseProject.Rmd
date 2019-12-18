@@ -155,9 +155,11 @@ for (i in file_names) {
   
 }
 
-ggplot(Mpmonth, aes(x = Mnth, y = DTG_M, color = Station)) + geom_point(size = 2)
+ggplot(Mpmonth, aes(x = Mnth, y = DTG_M, color = Station)) + geom_point(size = 2) + 
+  xlab("Month") + ylab("Monthly Bias: TG - Model")
 
-ggplot(Mpmonth, aes(x = MTG, y = DTG_M, color = Station)) + geom_point(size = 2)
+ggplot(Mpmonth, aes(x = MTG, y = DTG_M, color = Station)) + geom_point(size = 2) +
+  xlab("Monthly mean of Tide Gauges") + ylab("Monthly Bias: TG - Model")
 
 
 
