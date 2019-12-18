@@ -63,7 +63,7 @@ k <- 1
 for (i in file_names) {
   
   data_i <- ReadData(i)
-  A$file_names <- summary(data_i)
+  # A$file_names <- summary(data_i)
   
   ID <- k
   Mean_TG <- mean(data_i$TG)
@@ -100,8 +100,68 @@ diffP <- ggplot(MeanTable, aes(x = ID, y = Diff)) +
 library(gridExtra)
 grid.arrange(byLoc,diffP,nrow = 2, heights = c(5,2))
 ```
+# Data Analysis
+
+```{r}
+Data$Month <- as.factor(substr(as.character(Data$Date),6,7))
+
+library(ggplot2)
+TGP <- ggplot(Data, aes(x = Month, y = TG)) + geom_violin(trim = FALSE, colour = "#3366FF") + geom_boxplot(width = 0.1)
+ModP <- ggplot(Data, aes(x = Month, y = Model_cm)) + geom_violin(trim = FALSE) + geom_boxplot(width = 0.1)
+
+library(gridExtra)
+grid.arrange(TGP,ModP,nrow = 2)
+
+```
 
 
+```{r}
+library(ggplot2)
+library(gridExtra)
+
+k <- 1
+for (i in file_names) {
+# i <- "MyData/001.csv"
+  data_i <- ReadData(i)
+  data_i$Month <- as.factor(substr(as.character(data_i$Date),6,7))
+  data_i$Diff <- data_i$TG - data_i$Model_cm
+  
+  Station = as.factor(as.character(k))
+  MTG <- tapply(data_i$TG, data_i$Month, mean)  # mean of TG monthly
+  MModel <- tapply(data_i$Model_cm, data_i$Month, mean)  # mean of Model monthly
+  DTG_M <- tapply(data_i$Diff, data_i$Month, mean)  # mean of Difference monthly (TG - Model)
+  Dstd <- tapply(data_i$Diff, data_i$Month, sd)
+  
+  # Mnth <- as.factor(c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+  Mnth <- as.factor(c("01","02","03","04","05","06","07","08","09","10","11","12"))
+  
+  Mi <- data.frame(Station,Mnth,MTG,MModel,DTG_M,Dstd)
+  
+  # sample
+  if (k == 1) {
+    TSDiff <- ggplot(data_i, aes(x = Date, y = Diff)) + geom_line()
+    BoxDiff <- ggplot(data_i, aes(x = Month, y = Diff)) +
+      geom_boxplot(fill = "slateblue", alpha = 0.2)
+    grid.arrange(BoxDiff,TSDiff,nrow = 2, heights = c(2,1))
+  }
+  
+  if (k == 1) {
+    Mpmonth <- Mi
+    k <- 2
+  } else {
+    Mpmonth <- rbind(Mpmonth,Mi)
+    k <- k + 1
+  }
+  
+}
+
+ggplot(Mpmonth, aes(x = Mnth, y = DTG_M, color = Station)) + geom_point(size = 2)
+
+ggplot(Mpmonth, aes(x = MTG, y = DTG_M, color = Station)) + geom_point(size = 2)
+
+
+
+```
 
 
 
