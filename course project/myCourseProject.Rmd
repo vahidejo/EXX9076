@@ -1,6 +1,6 @@
 ---
 title: "My Course Project"
-output: html
+output: html_notebook
 ---
 
 In this investigation, we want to examine the model Sea level data (hydrodynamic models – HDM) compared with tide gauge data that is referenced to the geoid. and find biases between time series of medel and this tide gauges to improve the 
@@ -137,13 +137,13 @@ for (i in file_names) {
   
   Mi <- data.frame(Station,Mnth,MTG,MModel,DTG_M,Dstd)
   
-  # sample
-  if (k == 1) {
+  # # sample
+  # if (k == 1) {
     TSDiff <- ggplot(data_i, aes(x = Date, y = Diff)) + geom_line()
     BoxDiff <- ggplot(data_i, aes(x = Month, y = Diff)) +
       geom_boxplot(fill = "slateblue", alpha = 0.2)
     grid.arrange(BoxDiff,TSDiff,nrow = 2, heights = c(2,1))
-  }
+  # }
   
   if (k == 1) {
     Mpmonth <- Mi
